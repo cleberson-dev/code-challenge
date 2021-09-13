@@ -1,5 +1,7 @@
 const { Router } = require('express');
+const Joi = require('joi');
 const db = require('./database');
+const teamValidator = require('./validators/team.validator');
 
 const routes = Router();
 
@@ -27,10 +29,13 @@ routes.get('/teams', async (_, res) => {
 });
 
 routes.post('/teams', async (req, res) => {
-  const { name, pokemons } = req.body;
+  const newTeam = req.body;
 
   try {
+    Joi.assert(newTeam, teamValidator);
+
     let team;
+    const { name, pokemons } = newTeam;
     await db.transaction(async (trx) => {
       const result = await trx.insert({ name }, ['id', 'name']).into('team');
       team = result[0];
@@ -46,7 +51,17 @@ routes.post('/teams', async (req, res) => {
     });
   } catch (err) {
     console.error(err);
-    return res.status(400).send({ message: err.message || 'Error while creating the new team' });
+    
+    if (err instanceof Joi.ValidationError) {
+      return res.status(400).send({ 
+        errors: err.details.map(detail => ({ 
+          field: detail.context.key, 
+          message: detail.message 
+        }))
+      });
+    }
+
+    return res.status(500).send({ message: err.message || 'Error while creating the new team' });
   }
 });
 
