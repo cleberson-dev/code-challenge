@@ -13,12 +13,12 @@ export default function Pokemon({ pokemon, onClick }) {
   };
 
   return (
-    <div className="flex flex-col items-center w-full relative cursor-pointer" onClick={onClick}>
+    <div className="flex flex-col items-center w-full relative" onClick={onClick}>
       <div 
         style={{ fontFamily: 'Poppins', fontWeight: 'bold', backgroundColor: '#90ADC6' }} 
         className="absolute top-0 left-0 text-white rounded-full w-10 h-10 flex flex-row justify-center items-center"
       >
-        #{pokemon.order}
+        #{pokemon.id}
       </div>
       <img 
         src={pokemon.sprites.other['official-artwork'].front_default} 

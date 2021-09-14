@@ -5,6 +5,7 @@ import Pokemon from '../components/Pokemon';
 import PokemonSlot from '../components/PokemonSlot';
 import confirmIcon from '../../public/confirm-icon.svg';
 import removeIcon from '../../public/remove-icon.svg';
+import classNames from 'classnames';
 
 export default function HomePage() {
   const [pokemons, setPokemons] = useState([]);
@@ -29,35 +30,63 @@ export default function HomePage() {
       const pokemon = newPokemonSlots[i];
       if (!pokemon) {
         newPokemonSlots[i] = newPokemon;
+        setPokemonSlots(newPokemonSlots);
+        setPokemons(pokemons.map(p => p.id === newPokemon.id ? ({ ...newPokemon, added: true }) : p))
         break;
       }
     }
-    setPokemonSlots(newPokemonSlots);
   }
 
   function removePokemonFromSlot(pokemonToBeRemoved) {
     setPokemonSlots(pokemonSlots.map(pokemon => !pokemon || pokemon.id === pokemonToBeRemoved.id ? null : pokemon))
+    setPokemons(pokemons.map(pokemon => pokemon.id === pokemonToBeRemoved.id ? ({ ...pokemon, added: false }) : pokemon));
   }
   
   return (
     <div>
       <Header />
-      <Button status="success" icon={confirmIcon.src} />
-      <Button status="danger" icon={removeIcon.src} />
+      
       <h2 style={{ fontFamily: 'Spartan Bold', color: '#333652' }} className="text-base">
         My Team
       </h2>
-      <div className="grid grid-cols-3">
-        {pokemonSlots.map(pokemon => <PokemonSlot onClick={() => pokemon && removePokemonFromSlot(pokemon)} pokemon={pokemon} />)}
+      <div className="grid grid-cols-3" style={{ columnGap: '1rem', rowGap: '1rem' }}>
+        {pokemonSlots.map((pokemon, idx) => <PokemonSlot key={idx} onClick={() => pokemon && removePokemonFromSlot(pokemon)} pokemon={pokemon} />)}
       </div>
+      <div className="flex flex-row justify-end">
+        <Button status="success" icon={confirmIcon.src} />
+        <Button status="danger" icon={removeIcon.src} />
+      </div>
+
+
+
       <h2 style={{ fontFamily: 'Spartan Bold', color: '#333652' }} className="text-base">
         Choose 6 Pokémons:
       </h2>
       { pokemons.length > 0 && (
         <div className="grid grid-cols-4" style={{ columnGap: '1rem', rowGap: '1rem' }}>
-          {pokemons.map(pokemon => (
-            pokemon.loaded ? <Pokemon onClick={() => addPokemonToOpenSlot(pokemon)} key={pokemon.name} pokemon={pokemon} /> : <div key={pokemon.name}>{pokemon.name}</div>
-          ))}
+          {pokemons.map(pokemon => {
+            const pokemonClasses = classNames({
+              'relative': true,
+              'cursor-pointer': pokemonSlots.some(p => p && p.id === pokemon.id) || pokemonSlots.filter(slot => !slot).length > 0
+            });
+            return pokemon.loaded ? (
+              <div key={pokemon.id} className={pokemonClasses} onClick={() => !pokemon.added ? addPokemonToOpenSlot(pokemon) : removePokemonFromSlot(pokemon)}>
+                <Pokemon pokemon={pokemon} /> 
+                { pokemon.added && (
+                  <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center">
+                    <div 
+                      style={{ backgroundColor: '#8FDA58' }}
+                      className="w-16 h-16 flex justify-center items-center rounded-full opacity-90">
+                      <img
+                        className="transform scale-150" 
+                        src={confirmIcon.src} 
+                      />
+                    </div>
+                  </div>
+                ) }
+              </div>
+            ) : <div key={pokemon.name}>{pokemon.name}</div>
+          })}
         </div>
       )}
     </div>
