@@ -3,6 +3,7 @@ const next = require('next');
 const api = require('./api');
 
 const dev = process.env.NODE_ENV !== 'production';
+const PORT = process.env.PORT || 3000;
 
 const app = next({ dev });
 const handle = app.getRequestHandler();
@@ -18,9 +19,9 @@ app.prepare()
       return handle(req, res);
     });
 
-    server.listen(3000, err => {
+    server.listen(PORT, err => {
       if (err) throw err;
-      console.log('Listening on http://localhost:3000');
+      console.log(`Listening on http://localhost:${PORT}`);
     });
   })
   .catch(ex => {
