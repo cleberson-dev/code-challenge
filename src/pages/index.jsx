@@ -1,6 +1,9 @@
+import Header from '../components/Header';
+
 export default function HomePage() {
   return (
-    <div className="bg-red-100 rounded-sm">
+    <div>
+      <Header />
       Olá, mundo!
     </div>
   );

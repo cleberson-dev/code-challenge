@@ -1,3 +1,78 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: 'Spartan Regular';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Spartan Regular'), url('/fonts/Spartan-Regular.woff') format('woff');
+}
+
+
+@font-face {
+  font-family: 'Spartan Thin';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Spartan Thin'), url('/fonts/Spartan-Thin.woff') format('woff');
+}
+
+
+@font-face {
+  font-family: 'Spartan ExtraLight';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Spartan ExtraLight'), url('/fonts/Spartan-ExtraLight.woff') format('woff');
+}
+
+
+@font-face {
+  font-family: 'Spartan Light';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Spartan Light'), url('/fonts/Spartan-Light.woff') format('woff');
+}
+
+
+@font-face {
+  font-family: 'Spartan Medium';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Spartan Medium'), url('/fonts/Spartan-Medium.woff') format('woff');
+}
+
+
+@font-face {
+  font-family: 'Spartan SemiBold';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Spartan SemiBold'), url('/fonts/Spartan-SemiBold.woff') format('woff');
+}
+
+
+@font-face {
+  font-family: 'Spartan Bold';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Spartan Bold'), url('/fonts/Spartan-Bold.woff') format('woff');
+}
+
+
+@font-face {
+  font-family: 'Spartan ExtraBold';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Spartan ExtraBold'), url('/fonts/Spartan-ExtraBold.woff') format('woff');
+}
+
+
+@font-face {
+  font-family: 'Spartan Black';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Spartan Black'), url('/fonts/Spartan-Black.woff') format('woff');
+}
+
+body {
+  background-color: #E9EAEC;
+}
