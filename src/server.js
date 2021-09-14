@@ -8,8 +8,6 @@ const PORT = process.env.PORT || 3000;
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
-console.log(dev ? 'DEEEV!!' : 'PROOD');
-
 app.prepare()
   .then(() => {
     const server = express();
