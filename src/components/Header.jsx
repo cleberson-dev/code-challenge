@@ -2,14 +2,14 @@ export default function Header() {
   return (
     <header 
       style={{ backgroundColor: '#90ADC6' }} 
-      className="h-44 flex-col justify-center items-center"
+      className="h-44 flex flex-col justify-end items-center py-2"
     >
-      <div style={{ height: '2px' }} className="bg-white w-4/5"></div>
+      <div className="bg-white w-4/5 h-1 mb-2"></div>
       <h1 
-        style={{ fontFamily: 'Spartan Bold' }}
-        className="text-white text-xl"
+        style={{ fontFamily: 'Spartan ExtraBold' }}
+        className="text-white text-xl uppercase"
       >
-        Teams
+        <a>Teams</a>
       </h1>
     </header>
   );
