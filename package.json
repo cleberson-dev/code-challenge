@@ -6,11 +6,12 @@
   "scripts": {
     "dev": "node .",
     "build": "next build",
-    "start": "next start",
+    "start": "node .",
     "lint": "next lint",
     "docker": "docker run --name pokemon-teams-db -p 5432:5432 --env-file .env -d postgres:13",
     "docker:start": "docker start pokemon-teams-db",
-    "docker:stop": "docker stop pokemon-teams-db"
+    "docker:stop": "docker stop pokemon-teams-db",
+    "postinstall": "knex migrate:latest"
   },
   "repository": {
     "type": "git",
