@@ -1,4 +1,13 @@
+import { useRouter } from "next/router";
+import Link from 'next/link';
+
 export default function Header() {
+  const router = useRouter();
+  const path = router.pathname;
+  const link = path === '/teams' ? 
+    { href: '/create', title: 'Create a new team' } : 
+    { href: '/teams', title: 'Teams' };
+
   return (
     <header 
       style={{ backgroundColor: '#90ADC6' }} 
@@ -9,7 +18,9 @@ export default function Header() {
         style={{ fontFamily: 'Spartan ExtraBold' }}
         className="text-white text-xl uppercase"
       >
-        <a>Teams</a>
+        <Link href={link.href}>
+          <a>{link.title}</a>
+        </Link>
       </h1>
     </header>
   );
