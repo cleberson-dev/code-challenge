@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import Pokemon from '../components/Pokemon';
+import PokemonSlot from '../components/PokemonSlot';
 
 export default function HomePage() {
   const [pokemons, setPokemons] = useState([]);
@@ -22,6 +23,7 @@ export default function HomePage() {
       <h2 style={{ fontFamily: 'Spartan Bold', color: '#333652' }} className="text-base">
         My Team
       </h2>
+      { pokemons.length > 0 && pokemons[0].loaded && <PokemonSlot pokemon={pokemons[0]} /> }
 
       <h2 style={{ fontFamily: 'Spartan Bold', color: '#333652' }} className="text-base">
         Choose 6 Pokémons:
