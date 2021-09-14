@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
+import Button from '../components/Button';
 import Header from '../components/Header';
 import Pokemon from '../components/Pokemon';
 import PokemonSlot from '../components/PokemonSlot';
+import confirmIcon from '../../public/confirm-icon.svg';
+import removeIcon from '../../public/remove-icon.svg';
 
 export default function HomePage() {
   const [pokemons, setPokemons] = useState([]);
@@ -20,6 +23,8 @@ export default function HomePage() {
   return (
     <div>
       <Header />
+      <Button status="success" icon={confirmIcon.src} />
+      <Button status="danger" icon={removeIcon.src} />
       <h2 style={{ fontFamily: 'Spartan Bold', color: '#333652' }} className="text-base">
         My Team
       </h2>
