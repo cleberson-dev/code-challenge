@@ -1,4 +1,4 @@
-export default function Pokemon({ pokemon }) {
+export default function Pokemon({ pokemon, onClick }) {
   const typeColors = {
     normal: '#C3C0B8', fighting: '#80311D',
     flying: '#5D74D5', poison: '#924694',
@@ -13,7 +13,7 @@ export default function Pokemon({ pokemon }) {
   };
 
   return (
-    <div className="flex flex-col items-center w-full relative">
+    <div className="flex flex-col items-center w-full relative cursor-pointer" onClick={onClick}>
       <div 
         style={{ fontFamily: 'Poppins', fontWeight: 'bold', backgroundColor: '#90ADC6' }} 
         className="absolute top-0 left-0 text-white rounded-full w-10 h-10 flex flex-row justify-center items-center"
