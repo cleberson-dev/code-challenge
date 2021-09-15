@@ -3,8 +3,10 @@ import Pokeball from "./Pokeball";
 
 export default function PokemonSlot({ pokemon, onClick, selected = false }) {
   const classes = classNames({
-    "relative cursor-pointer": true,
-    "filter grayscale": selected
+    "relative": true,
+    "filter grayscale": selected,
+    "cursor-pointer": !!onClick,
+    "hover:opacity-80": true
   });
 
   return (
