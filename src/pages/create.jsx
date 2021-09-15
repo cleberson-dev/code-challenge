@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Button from '../components/Button';
 import Header from '../components/Header';
 import Pokemon from '../components/Pokemon';
@@ -10,6 +10,9 @@ import classNames from 'classnames';
 export default function HomePage() {
   const [pokemons, setPokemons] = useState([]);
   const [pokemonSlots, setPokemonSlots] = useState(new Array(6).fill(null));
+  const [pokemonSlotSelected, setPokemonSlotSelected] = useState(null);
+
+  const areSlotsAvailable = useMemo(() => pokemonSlots.filter(slot => !slot).length > 0, [pokemonSlots]);
 
   useEffect(() => {
     fetch('https://pokeapi.co/api/v2/pokemon').then(res => res.json())
@@ -50,11 +53,14 @@ export default function HomePage() {
         My Team
       </h2>
       <div className="grid grid-cols-3" style={{ columnGap: '1rem', rowGap: '1rem' }}>
-        {pokemonSlots.map((pokemon, idx) => <PokemonSlot key={idx} onClick={() => pokemon && removePokemonFromSlot(pokemon)} pokemon={pokemon} />)}
+        {pokemonSlots.map((pokemon, idx) => <PokemonSlot selected={pokemon && pokemonSlotSelected && pokemon.id === pokemonSlotSelected.id} key={idx} onClick={() => pokemon && setPokemonSlotSelected(pokemon)} pokemon={pokemon} />)}
       </div>
       <div className="flex flex-row justify-end">
-        <Button status="success" icon={confirmIcon.src} />
-        <Button status="danger" icon={removeIcon.src} />
+        <Button status="success" icon={confirmIcon.src} disabled={areSlotsAvailable} />
+        <Button status="danger" icon={removeIcon.src} disabled={!pokemonSlotSelected} onClick={() => {
+          removePokemonFromSlot(pokemonSlotSelected);
+          setPokemonSlotSelected(null);
+        }} />
       </div>
 
 
