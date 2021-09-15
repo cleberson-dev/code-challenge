@@ -1,16 +1,20 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, useRef } from 'react';
 import Button from '../components/Button';
 import Header from '../components/Header';
 import Pokemon from '../components/Pokemon';
 import PokemonSlot from '../components/PokemonSlot';
 import confirmIcon from '../../public/confirm-icon.svg';
 import removeIcon from '../../public/remove-icon.svg';
+import editIcon from '../../public/edit-icon.svg';
 import classNames from 'classnames';
 
 export default function HomePage() {
   const [pokemons, setPokemons] = useState([]);
   const [pokemonSlots, setPokemonSlots] = useState(new Array(6).fill(null));
   const [pokemonSlotSelected, setPokemonSlotSelected] = useState(null);
+  const [teamName, setTeamName] = useState('My Team');
+  const [isEditingTeamName, setIsEditingTeamName] = useState(false);
+  const teamNameInput = useRef(null);
 
   const areSlotsAvailable = useMemo(() => pokemonSlots.filter(slot => !slot).length > 0, [pokemonSlots]);
 
@@ -24,6 +28,11 @@ export default function HomePage() {
         setPokemons(pokemons.map(poke => ({ ...poke, loaded: true })));
       });
   }, []);
+
+  useEffect(() => {
+    if (!teamNameInput.current) return;
+    teamNameInput.current.focus();
+  }, [isEditingTeamName]);
 
 
   function addPokemonToOpenSlot(newPokemon) {
@@ -49,8 +58,24 @@ export default function HomePage() {
     <div>
       <Header />
       
-      <h2 style={{ fontFamily: 'Spartan Bold', color: '#333652' }} className="text-base">
-        My Team
+      <h2 style={{ fontFamily: 'Spartan Bold', color: '#333652' }} className="text-base flex items-center">
+        {
+          isEditingTeamName ?  
+            <input
+              ref={teamNameInput} 
+              style={{ width: 'min-content' }}
+              value={teamName} 
+              onChange={e => setTeamName(e.target.value)} 
+              onKeyDown={e => e.code === 'Enter' && setIsEditingTeamName(false)}
+            />
+            : <span>{ teamName }</span> 
+        }
+        <button className="ml-1" onClick={() => {
+          setIsEditingTeamName(!isEditingTeamName);
+          
+        }}>
+          <img src={editIcon.src} />
+        </button>
       </h2>
       <div className="grid grid-cols-3" style={{ columnGap: '1rem', rowGap: '1rem' }}>
         {pokemonSlots.map((pokemon, idx) => <PokemonSlot selected={pokemon && pokemonSlotSelected && pokemon.id === pokemonSlotSelected.id} key={idx} onClick={() => pokemon && setPokemonSlotSelected(pokemon)} pokemon={pokemon} />)}
