@@ -7,6 +7,7 @@ import confirmIcon from '../../public/confirm-icon.svg';
 import removeIcon from '../../public/remove-icon.svg';
 import editIcon from '../../public/edit-icon.svg';
 import classNames from 'classnames';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 export default function HomePage() {
   const [pokemons, setPokemons] = useState([]);
@@ -21,11 +22,10 @@ export default function HomePage() {
   useEffect(() => {
     fetch('https://pokeapi.co/api/v2/pokemon').then(res => res.json())
       .then(({ results }) => {
-        setPokemons(results.map(pokemon => ({ ...pokemon, loaded: false })));
         return Promise.all(results.map(pokemon => fetch(pokemon.url).then(res => res.json())));
       })
-      .then(pokemons => {
-        setPokemons(pokemons.map(poke => ({ ...poke, loaded: true })));
+      .then(loadedPokemons => {
+        setPokemons(loadedPokemons);
       });
   }, []);
 
@@ -75,6 +75,18 @@ export default function HomePage() {
   function removePokemonFromSlot(pokemonToBeRemoved) {
     setPokemonSlots(pokemonSlots.map(pokemon => !pokemon || pokemon.id === pokemonToBeRemoved.id ? null : pokemon))
     setPokemons(pokemons.map(pokemon => pokemon.id === pokemonToBeRemoved.id ? ({ ...pokemon, added: false }) : pokemon));
+  }
+
+  function fetchMorePokemons() {
+    fetch(`https://pokeapi.co/api/v2/pokemon?offset=${pokemons.length}&limit=20`)
+    .then(res => res.json())
+    .then(({ results }) => Promise.all(results.map(pokemon => fetch(pokemon.url).then(res => res.json()))))
+    .then(newPokemons => {
+      setPokemons([
+        ...pokemons,
+        ...newPokemons
+      ]);
+    });
   }
   
   return (
@@ -134,33 +146,46 @@ export default function HomePage() {
       <h2 style={{ fontFamily: 'Spartan Bold', color: '#333652' }} className="text-base">
         Choose 6 Pokémons:
       </h2>
-      { pokemons.length > 0 && (
-        <div className="grid grid-cols-4" style={{ columnGap: '1rem', rowGap: '1rem' }}>
-          {pokemons.map(pokemon => {
-            const pokemonClasses = classNames({
-              'relative': true,
-              'cursor-pointer': pokemonSlots.some(p => p && p.id === pokemon.id) || pokemonSlots.filter(slot => !slot).length > 0
-            });
-            return pokemon.loaded ? (
-              <div key={pokemon.id} className={pokemonClasses} onClick={() => !pokemon.added ? addPokemonToOpenSlot(pokemon) : removePokemonFromSlot(pokemon)}>
-                <Pokemon pokemon={pokemon} /> 
-                { pokemon.added && (
-                  <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center">
-                    <div 
-                      style={{ backgroundColor: '#8FDA58' }}
-                      className="w-16 h-16 flex justify-center items-center rounded-full opacity-90">
-                      <img
-                        className="transform scale-150" 
-                        src={confirmIcon.src} 
-                      />
-                    </div>
+
+      <InfiniteScroll
+        dataLength={pokemons.length}
+        next={fetchMorePokemons}
+        hasMore={true}
+        loader={<h4>Loading...</h4>}
+        endMessage={
+          <p style={{ textAlign: 'center' }}>
+            <b>Yay! You have seen it all</b>
+          </p>
+        }
+      >
+        { pokemons.length > 0 && (
+            <div className="grid grid-cols-4" style={{ columnGap: '1rem', rowGap: '1rem' }}>
+              {pokemons.map(pokemon => {
+                const pokemonClasses = classNames({
+                  'relative': true,
+                  'cursor-pointer': pokemonSlots.some(p => p && p.id === pokemon.id) || pokemonSlots.filter(slot => !slot).length > 0
+                });
+                return (
+                  <div key={pokemon.id} className={pokemonClasses} onClick={() => !pokemon.added ? addPokemonToOpenSlot(pokemon) : removePokemonFromSlot(pokemon)}>
+                    <Pokemon pokemon={pokemon} /> 
+                    { pokemon.added && (
+                      <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center">
+                        <div 
+                          style={{ backgroundColor: '#8FDA58' }}
+                          className="w-16 h-16 flex justify-center items-center rounded-full opacity-90">
+                          <img
+                            className="transform scale-150" 
+                            src={confirmIcon.src} 
+                          />
+                        </div>
+                      </div>
+                    ) }
                   </div>
-                ) }
-              </div>
-            ) : <div key={pokemon.name}>{pokemon.name}</div>
-          })}
-        </div>
-      )}
+                );
+              })}
+            </div>
+          )}
+      </InfiniteScroll>
     </>
   );
 }
