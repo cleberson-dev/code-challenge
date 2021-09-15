@@ -1,6 +1,7 @@
 import PokemonSlot from './PokemonSlot';
 
 export default function Team({ name, pokemons }) {
+  console.log({ name, pokemons });
   return (
     <div>
       <div style={{ fontFamily: 'Spartan SemiBold' }}>

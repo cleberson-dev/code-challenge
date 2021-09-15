@@ -34,6 +34,29 @@ export default function HomePage() {
     teamNameInput.current.focus();
   }, [isEditingTeamName]);
 
+  async function createTeam() {
+    const body = {
+      name: teamName,
+      pokemons: pokemonSlots.map(slot => ({ id: slot.id }))
+    };
+
+    console.log('Sending: ', body);
+
+    await fetch('/api/teams', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    });
+    
+    alert('Everything went well!!');
+    setPokemonSlots(pokemonSlots.map(() => null));
+    setPokemonSlotSelected(null);
+    setTeamName('My Team');
+    setPokemons(pokemons.map(poke => ({ ...poke, added: false })));
+  }
+
 
   function addPokemonToOpenSlot(newPokemon) {
     // It must add to the first open slot found
@@ -72,7 +95,6 @@ export default function HomePage() {
         }
         <button className="ml-1" onClick={() => {
           setIsEditingTeamName(!isEditingTeamName);
-          
         }}>
           <img src={editIcon.src} />
         </button>
@@ -81,7 +103,7 @@ export default function HomePage() {
         {pokemonSlots.map((pokemon, idx) => <PokemonSlot selected={pokemon && pokemonSlotSelected && pokemon.id === pokemonSlotSelected.id} key={idx} onClick={() => pokemon && setPokemonSlotSelected(pokemon)} pokemon={pokemon} />)}
       </div>
       <div className="flex flex-row justify-end">
-        <Button status="success" icon={confirmIcon.src} disabled={areSlotsAvailable} />
+        <Button status="success" icon={confirmIcon.src} disabled={areSlotsAvailable} onClick={() => createTeam()} />
         <Button status="danger" icon={removeIcon.src} disabled={!pokemonSlotSelected} onClick={() => {
           removePokemonFromSlot(pokemonSlotSelected);
           setPokemonSlotSelected(null);
