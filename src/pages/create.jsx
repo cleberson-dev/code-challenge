@@ -97,11 +97,32 @@ export default function HomePage() {
           <img src={editIcon.src} />
         </button>
       </h2>
-      <div className="grid grid-cols-3" style={{ columnGap: '1rem', rowGap: '1rem' }}>
-        {pokemonSlots.map((pokemon, idx) => <PokemonSlot selected={pokemon && pokemonSlotSelected && pokemon.id === pokemonSlotSelected.id} key={idx} onClick={() => pokemon && setPokemonSlotSelected(pokemon)} pokemon={pokemon} />)}
+      <div className="flex flex-wrap">
+        {pokemonSlots.map((pokemon, idx) => {
+          const pokemonClasses = classNames({
+            'w-1/4 ml-4 mt-2': true,
+            "ml-10": idx === 3
+          });
+
+          return (
+            <div className={pokemonClasses}>
+              <PokemonSlot 
+                selected={pokemon && pokemonSlotSelected && pokemon.id === pokemonSlotSelected.id} 
+                key={idx} 
+                onClick={() => pokemon && setPokemonSlotSelected(pokemon)} 
+                pokemon={pokemon} 
+              />
+            </div>
+          );
+        })}
       </div>
-      <div className="flex flex-row justify-end">
-        <Button status="success" icon={confirmIcon.src} disabled={areSlotsAvailable} onClick={() => createTeam()} />
+      <div className="flex flex-row justify-end mt-4">
+        <Button 
+          status="success" icon={confirmIcon.src} 
+          disabled={areSlotsAvailable} 
+          onClick={() => createTeam()}
+          className="mr-2"
+        />
         <Button status="danger" icon={removeIcon.src} disabled={!pokemonSlotSelected} onClick={() => {
           removePokemonFromSlot(pokemonSlotSelected);
           setPokemonSlotSelected(null);

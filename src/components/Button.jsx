@@ -14,10 +14,10 @@ export default function Button({ icon, status, onClick, label = 'Click here', ..
 
   return (
     <button 
+      {...props}
       onClick={onClick}
       style={{ backgroundColor: colors[status] || colors.success }} 
-      className={classes}
-      {...props}
+      className={`${classes} ${props.className}`}
     >
       <img src={icon} alt={label} />
     </button>

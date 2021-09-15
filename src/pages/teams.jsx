@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import Header from "../components/Header";
 import Team from "../components/Team";
 
 export default function MyTeams() {
