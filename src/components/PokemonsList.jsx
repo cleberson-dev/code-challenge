@@ -1,33 +1,9 @@
-import { useMemo, useState, useEffect } from 'react';
+import { useMemo } from 'react';
 import Pokemon from './Pokemon';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import confirmIcon from '../../public/confirm-icon.svg';
 
-export default function PokemonsList({ onPokemonClick }) {
-  const [pokemons, setPokemons] = useState([]);
-
-  useEffect(() => {
-    fetch('https://pokeapi.co/api/v2/pokemon').then(res => res.json())
-      .then(({ results }) => {
-        return Promise.all(results.map(pokemon => fetch(pokemon.url).then(res => res.json())));
-      })
-      .then(loadedPokemons => {
-        setPokemons(loadedPokemons);
-      });
-  }, []);
-
-  function fetchMorePokemons() {
-    fetch(`https://pokeapi.co/api/v2/pokemon?offset=${pokemons.length}&limit=20`)
-    .then(res => res.json())
-    .then(({ results }) => Promise.all(results.map(pokemon => fetch(pokemon.url).then(res => res.json()))))
-    .then(newPokemons => {
-      setPokemons([
-        ...pokemons,
-        ...newPokemons
-      ]);
-    });
-  }
-
+export default function PokemonsList({ onPokemonClick, pokemons, next }) {
   const addedIndicatorElement = useMemo(() => (
     <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center">
       <div 
@@ -45,7 +21,7 @@ export default function PokemonsList({ onPokemonClick }) {
   return (
     <InfiniteScroll
       dataLength={pokemons.length}
-      next={fetchMorePokemons}
+      next={next}
       hasMore={true}
       loader={<h4>Loading...</h4>}
       endMessage={
