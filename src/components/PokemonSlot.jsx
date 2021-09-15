@@ -1,10 +1,9 @@
 import classNames from "classnames";
 import Pokeball from "./Pokeball";
 
-export default function PokemonSlot({ pokemon, onClick, selected = false }) {
+export default function PokemonSlot({ pokemon, onClick }) {
   const classes = classNames({
     "relative": true,
-    "filter grayscale": selected,
     "cursor-pointer": !!onClick,
     "hover:opacity-80": true
   });

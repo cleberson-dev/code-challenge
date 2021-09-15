@@ -113,7 +113,8 @@ export default function HomePage() {
         {pokemonSlots.map((pokemon, idx) => {
           const pokemonClasses = classNames({
             'w-1/4 ml-4 mt-2': true,
-            "ml-10": idx === 3
+            "ml-10": idx === 3,
+            'filter grayscale': pokemon && pokemonSlotSelected && pokemonSlotSelected.id !== pokemon.id
           });
 
           return (
@@ -121,7 +122,7 @@ export default function HomePage() {
               <PokemonSlot 
                 selected={pokemon && pokemonSlotSelected && pokemon.id === pokemonSlotSelected.id} 
                 key={idx} 
-                onClick={() => pokemon && setPokemonSlotSelected(pokemon)} 
+                onClick={pokemon && (() => setPokemonSlotSelected(pokemon))} 
                 pokemon={pokemon} 
               />
             </div>
