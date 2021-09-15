@@ -4,10 +4,10 @@ export default function Team({ name, pokemons }) {
   console.log({ name, pokemons });
   return (
     <div>
-      <div style={{ fontFamily: 'Spartan SemiBold' }}>
+      <div style={{ fontFamily: 'Spartan Bold' }}>
         { name }
       </div>
-      <div className="p-8 grid grid-cols-3">
+      <div className="p-4 grid grid-cols-3" style={{ columnGap: '1rem', rowGap: '1rem' }}>
         { pokemons.map(pokemon => <PokemonSlot key={pokemon.id} pokemon={pokemon} />) }
       </div>
     </div>

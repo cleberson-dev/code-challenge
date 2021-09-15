@@ -59,7 +59,7 @@ export default function HomePage() {
 
 
   function addPokemonToOpenSlot(newPokemon) {
-    // It must add to the first open slot found
+    // It should add into the first available slot
     const newPokemonSlots = [...pokemonSlots];
     for (let i = 0; i < newPokemonSlots.length; i += 1) {
       const pokemon = newPokemonSlots[i];
@@ -78,9 +78,7 @@ export default function HomePage() {
   }
   
   return (
-    <div>
-      <Header />
-      
+    <>
       <h2 style={{ fontFamily: 'Spartan Bold', color: '#333652' }} className="text-base flex items-center">
         {
           isEditingTeamName ?  
@@ -142,6 +140,6 @@ export default function HomePage() {
           })}
         </div>
       )}
-    </div>
+    </>
   );
 }

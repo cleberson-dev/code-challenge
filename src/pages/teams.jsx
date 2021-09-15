@@ -26,9 +26,17 @@ export default function MyTeams() {
   
   
   return (
-    <div>
-      <Header />
-      { teams.length > 0 && pokemons.length > 0 && teams.map(team => <Team key={team.id} name={team.name} pokemons={team.pokemons.map(pokemon => pokemons.find(p => p.id === pokemon.id))} />) }
-    </div>
+    <>
+      { teams.length > 0 && pokemons.length > 0 && (
+        <ul>
+          {teams.map(team => (
+            <li key={team.id} className="mb-8 border-b border-solid border-black">
+              <Team name={team.name} pokemons={team.pokemons.map(pokemon => pokemons.find(p => p.id === pokemon.id))} /> 
+            </li>
+          ))
+          }
+        </ul>
+      )}
+    </>
   );
 }
