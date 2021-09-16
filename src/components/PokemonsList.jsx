@@ -12,9 +12,9 @@ export default function PokemonsList({ pokemons, next }) {
     <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center">
       <div 
         style={{ backgroundColor: '#8FDA58' }}
-        className="w-16 h-16 flex justify-center items-center rounded-full opacity-90">
+        className="w-10 h-10 flex justify-center items-center rounded-full opacity-90">
         <img
-          className="transform scale-150" 
+          className="transform scale-125" 
           src={confirmIcon.src} 
         />
       </div>
@@ -38,7 +38,7 @@ export default function PokemonsList({ pokemons, next }) {
         </p>
       }
     >
-      <div className="grid grid-cols-4" style={{ columnGap: '1rem', rowGap: '1rem' }}>
+      <div className="grid grid-cols-4" style={{ columnGap: '2rem', rowGap: '2rem' }}>
         {pokemons.map(pokemon => {
           const classes = classNames({
             'relative': true,

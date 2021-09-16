@@ -22,7 +22,7 @@ export default function Pokemon({ pokemon }) {
     <div className={classes}>
       <div 
         style={{ fontFamily: 'Poppins', fontWeight: 'bold', backgroundColor: '#90ADC6' }} 
-        className="absolute top-0 left-0 text-white rounded-full w-10 h-10 flex flex-row justify-center items-center"
+        className="text-xs absolute top-0 left-0 text-white rounded-full w-6 h-6 flex flex-row justify-center items-center"
       >
         #{pokemon.id}
       </div>
@@ -33,7 +33,7 @@ export default function Pokemon({ pokemon }) {
       ></img>
       <div 
         style={{ fontFamily: 'Spartan Bold', color: '#333652' }}
-        className="capitalize"
+        className="capitalize text-sm truncate text-left overflow-hidden whitespace-nowrap"
       >
         {pokemon.name}
       </div>
@@ -42,10 +42,10 @@ export default function Pokemon({ pokemon }) {
           className="w-full h-1"
           style={{ backgroundColor: typeColors[pokemon.types[0]?.type.name] || 'white' }}
         ></div>
-        <div
+        { pokemon.types[1] && <div
           className="w-full h-1"
-          style={{ backgroundColor: typeColors[pokemon.types[1]?.type.name] || 'white' }}
-        ></div>
+          style={{ backgroundColor: typeColors[pokemon.types[1].type.name] || 'white' }}
+        ></div> }
       </div>
     </div>
   );

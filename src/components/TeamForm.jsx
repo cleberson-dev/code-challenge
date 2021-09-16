@@ -31,7 +31,7 @@ export default function TeamForm({ onSubmit }) {
     }}>
       <h2 
         style={{ fontFamily: 'Spartan Bold', color: '#333652' }} 
-        className="text-base flex items-center mb-4"
+        className="text-base flex items-center"
       >
         {
           isEditingTeamName ?  
@@ -44,7 +44,7 @@ export default function TeamForm({ onSubmit }) {
             />
             : <span>{ teamName }</span> 
         }
-        <button className="ml-1" onClick={() => {
+        <button className="ml-1" type="button" onClick={() => {
           setIsEditingTeamName(!isEditingTeamName);
         }}>
           <img src={editIcon.src} />
@@ -53,7 +53,7 @@ export default function TeamForm({ onSubmit }) {
       <div className="flex flex-wrap">
         {pokemonSlots.map((pokemon, idx) => {
           const pokemonClasses = classNames({
-            'w-1/4 ml-4 mt-2': true,
+            'w-1/4 ml-4 mt-4': true,
             "ml-10": idx === 3,
             'filter grayscale': pokemon && selectedSlot && selectedSlot.id !== pokemon.id
           });

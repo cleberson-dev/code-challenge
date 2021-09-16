@@ -1,5 +1,5 @@
-import { useRouter } from 'next/router';
 import { useEffect, useContext } from 'react';
+import { useRouter } from 'next/router';
 import PokemonsList from '../components/PokemonsList';
 import TeamForm from '../components/TeamForm';
 import { AppContext } from './_app';
@@ -45,6 +45,7 @@ export default function HomePage() {
     
     clearPokemonSlots();
     setSelectedSlot(null);
+    router.push('/teams');
   }
 
   return (
@@ -54,7 +55,7 @@ export default function HomePage() {
         onSubmit={createTeam}
       />
 
-      <h2 style={{ fontFamily: 'Spartan Bold', color: '#333652' }}>
+      <h2 className="mt-10 mb-2" style={{ fontFamily: 'Spartan Bold', color: '#333652' }}>
         Choose 6 Pokémons:
       </h2>
       <PokemonsList 
