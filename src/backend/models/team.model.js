@@ -1,7 +1,7 @@
 const db = require('../database');
 
 module.exports.getAll = async () => {
-  const teams = await db.select('id', 'name').from('team');
+  const teams = await db('team').orderByRaw('id DESC');
     
   for (const team of teams) {
     const pokemons = await db('team_pokemon')
