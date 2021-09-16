@@ -1,16 +1,24 @@
 const db = require('../database');
 
-module.exports.getAll = async () => {
-  const teams = await db('team').orderByRaw('id DESC');
+module.exports.getAll = async ({ offset, size }) => {
+  let { count } = await db('team').count('*').first();
+
+  const results = await db('team')
+    .orderByRaw('id DESC')
+    .limit(size)
+    .offset(offset);
     
-  for (const team of teams) {
+  for (const team of results) {
     const pokemons = await db('team_pokemon')
       .where('team_id', team.id)
       .select('pokemon_id');
     team.pokemons = pokemons.map(({ pokemon_id }) => ({ id: pokemon_id }));
   }
 
-  return teams;
+  return {
+    count: Number(count),
+    results
+  };
 }
 
 module.exports.create = async ({ name, pokemons }) => {
