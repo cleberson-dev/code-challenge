@@ -17,7 +17,6 @@ export default function MyTeams() {
         return Promise.all(uniquePokemonIds.map(pokemonId => fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`).then(res => res.json())));
       })
       .then(pokemons => {
-        console.log(pokemons);
         setPokemons(pokemons);
       });
   }, []);

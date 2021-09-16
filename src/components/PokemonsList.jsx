@@ -1,9 +1,13 @@
-import { useMemo } from 'react';
+import { useContext, useMemo } from 'react';
+import classNames from 'classnames';
 import Pokemon from './Pokemon';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import confirmIcon from '../../public/confirm-icon.svg';
+import { AppContext } from '../pages/_app';
 
-export default function PokemonsList({ onPokemonClick, pokemons, next }) {
+export default function PokemonsList({ pokemons, next }) {
+  const { isPokemonAddedToSlot, availableSlots, removePokemonFromSlot, addPokemonToOpenSlot } = useContext(AppContext);
+  
   const addedIndicatorElement = useMemo(() => (
     <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center">
       <div 
@@ -16,6 +20,10 @@ export default function PokemonsList({ onPokemonClick, pokemons, next }) {
       </div>
     </div>), []);
   
+  function pokemonClickHandler(pokemon) {
+    if (isPokemonAddedToSlot(pokemon)) return removePokemonFromSlot(pokemon);
+    addPokemonToOpenSlot(pokemon); 
+  }
 
   if (pokemons.length === 0) return <div>EMPTY</div>;
   return (
@@ -31,12 +39,18 @@ export default function PokemonsList({ onPokemonClick, pokemons, next }) {
       }
     >
       <div className="grid grid-cols-4" style={{ columnGap: '1rem', rowGap: '1rem' }}>
-        {pokemons.map(pokemon => (
-          <div key={pokemon.id} className="relative cursor-pointer" onClick={() => onPokemonClick(pokemon)}>
-            <Pokemon pokemon={pokemon} /> 
-            { pokemon.added && addedIndicatorElement }
-          </div>
-        ))}
+        {pokemons.map(pokemon => {
+          const classes = classNames({
+            'relative': true,
+            'cursor-pointer': isPokemonAddedToSlot(pokemon) || availableSlots > 0
+          });
+          return (
+            <div key={pokemon.id} className={classes} onClick={isPokemonAddedToSlot(pokemon) || availableSlots > 0 ? (() => pokemonClickHandler(pokemon)) : undefined}>
+              <Pokemon pokemon={pokemon} /> 
+              { isPokemonAddedToSlot(pokemon) && addedIndicatorElement }
+            </div>
+          );
+        })}
       </div>
     </InfiniteScroll>
   );

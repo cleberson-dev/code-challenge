@@ -16,7 +16,7 @@ export default function Header() {
       <div className="bg-white w-4/5 h-1 mb-2"></div>
       <h1 
         style={{ fontFamily: 'Spartan ExtraBold' }}
-        className="text-white text-xl uppercase"
+        className="text-white text-xl uppercase hover:opacity-70"
       >
         <Link href={link.href}>
           <a>{link.title}</a>
