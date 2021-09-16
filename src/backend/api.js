@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const Joi = require('joi');
-const db = require('./database');
 const teamValidator = require('./validators/team.validator');
+const TeamModel = require('./models/team.model');
 
 const routes = Router();
 
@@ -12,14 +12,7 @@ routes.get('/hello/:name', (req, res) => {
 
 routes.get('/teams', async (_, res) => {
   try {
-    const teams = await db.select('id', 'name').from('team');
-    
-    for (const team of teams) {
-      const pokemons = await db('team_pokemon')
-        .where('team_id', team.id)
-        .select('pokemon_id');
-      team.pokemons = pokemons.map(({ pokemon_id }) => ({ id: pokemon_id }));
-    }
+    const teams = await TeamModel.getAll();
 
     return res.status(200).send(teams);
   } catch (err) {
@@ -29,26 +22,13 @@ routes.get('/teams', async (_, res) => {
 });
 
 routes.post('/teams', async (req, res) => {
-  const newTeam = req.body;
+  const { body: newTeam } = req;
 
   try {
     Joi.assert(newTeam, teamValidator);
 
-    let team;
-    const { name, pokemons } = newTeam;
-    await db.transaction(async (trx) => {
-      const result = await trx.insert({ name }, ['id', 'name']).into('team');
-      team = result[0];
-      await trx.insert(pokemons.map(pokemon => ({ 
-        team_id: team.id,
-        pokemon_id: pokemon.id
-      }))).into('team_pokemon');
-    });
-
-    return res.status(201).send({
-      ...team,
-      pokemons
-    });
+    const createdTeam = await TeamModel.create(newTeam);
+    return res.status(201).send(createdTeam);
   } catch (err) {
     console.error(err);
     
