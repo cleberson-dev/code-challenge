@@ -28,7 +28,7 @@ export default function MyTeams() {
       { teams.length > 0 && pokemons.length > 0 && (
         <ul>
           {teams.map(team => (
-            <li key={team.id} className="mb-8 border-b border-solid border-black">
+            <li key={team.id} className="mb-8 pb-4 last:border-transparent border-b border-solid border-black">
               <Team name={team.name} pokemons={team.pokemons.map(pokemon => pokemons.find(p => p.id === pokemon.id))} /> 
             </li>
           ))

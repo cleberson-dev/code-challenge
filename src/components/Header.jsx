@@ -11,12 +11,12 @@ export default function Header() {
   return (
     <header 
       style={{ backgroundColor: '#90ADC6' }} 
-      className="h-36 flex flex-col justify-end items-center py-2"
+      className="h-36 flex flex-col justify-end items-center"
     >
-      <div className="bg-white w-4/5 h-1 mb-2"></div>
+      <div className="bg-white w-4/5" style={{ height: '2px' }}></div>
       <h1 
         style={{ fontFamily: 'Spartan ExtraBold' }}
-        className="text-white text-xl uppercase hover:opacity-70"
+        className="text-white text-xl uppercase hover:opacity-70 py-4"
       >
         <Link href={link.href}>
           <a>{link.title}</a>
