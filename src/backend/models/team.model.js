@@ -1,4 +1,4 @@
-const db = require('./database');
+const db = require('../database');
 
 module.exports.getAll = async () => {
   const teams = await db.select('id', 'name').from('team');

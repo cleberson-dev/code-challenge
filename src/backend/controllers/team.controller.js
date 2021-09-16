@@ -1,16 +1,8 @@
-const { Router } = require('express');
 const Joi = require('joi');
-const teamValidator = require('./validators/team.validator');
-const TeamModel = require('./models/team.model');
+const teamValidator = require('../validators/team.validator');
+const TeamModel = require('../models/team.model');
 
-const routes = Router();
-
-routes.get('/hello/:name', (req, res) => {
-  const { name } = req.params;
-  return res.status(200).send({ message: `Hello, ${name}!!` });
-});
-
-routes.get('/teams', async (_, res) => {
+module.exports.getAll = async (_, res) => {
   try {
     const teams = await TeamModel.getAll();
 
@@ -19,9 +11,9 @@ routes.get('/teams', async (_, res) => {
     console.error(err);
     return res.status(500).send({ message: err.message || 'Error while retrieving teams' });
   }
-});
+}
 
-routes.post('/teams', async (req, res) => {
+module.exports.create = async (req, res) => {
   const { body: newTeam } = req;
 
   try {
@@ -43,6 +35,4 @@ routes.post('/teams', async (req, res) => {
 
     return res.status(500).send({ message: err.message || 'Error while creating the new team' });
   }
-});
-
-module.exports = routes;
+}

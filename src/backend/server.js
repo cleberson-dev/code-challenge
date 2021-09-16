@@ -1,6 +1,6 @@
 const express = require('express');
 const next = require('next');
-const api = require('./api');
+const apiRoutes = require('./routes');
 
 const dev = process.env.NODE_ENV !== 'production';
 const PORT = process.env.PORT || 3000;
@@ -13,7 +13,7 @@ app.prepare()
     const server = express();
     server.use(express.json());
 
-    server.use('/api', api);
+    server.use('/api', apiRoutes);
 
     server.get('(/*)?', (req, res) => {
       return handle(req, res);

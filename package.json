@@ -2,7 +2,7 @@
   "name": "code-challenge",
   "version": "1.0.0",
   "description": "Implement in [React](https://pt-br.reactjs.org) a web page, which contains 2 tabs (\"Create a new team\" and \"Team\") as defined in the following mockup.",
-  "main": "src/backend/index.js",
+  "main": "src/backend/server.js",
   "scripts": {
     "dev": "node .",
     "build": "next build",
